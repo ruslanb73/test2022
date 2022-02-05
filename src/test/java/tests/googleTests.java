@@ -17,7 +17,7 @@ import javax.swing.text.html.parser.Element;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class googletests {
+public class googleTests {
 
    private static WebDriver driver;
 
@@ -59,7 +59,8 @@ public class googletests {
    driver.findElement(By.xpath("//div[.='÷']")).click();
    driver.findElement(By.xpath("//div[.='0']")).click();
    driver.findElement(By.xpath("//div[.='=']")).click();
-   assertEquals("Infinity", driver.findElement(By.cssSelector("#cwos")).getText());;
+   assertEquals("Infinity", driver.findElement(By.cssSelector("#cwos")).getText());
+   assertEquals("6 ÷ 0 =", driver.findElement(By.xpath("//*[@id=\"rso\"]/div[1]/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div/span")).getText());
 }
    @Test
 public void test3() {
@@ -67,6 +68,8 @@ public void test3() {
       driver.findElement(By.cssSelector("input.gLFyf.gsfi")).sendKeys("Калькулятор", Keys.ENTER);
       driver.findElement(By.xpath("//div[.='sin']")).click();
       driver.findElement(By.xpath("//div[.='=']")).click();
+      assertEquals("Error", driver.findElement(By.cssSelector("#cwos")).getText());
+      assertEquals("sin() =", driver.findElement(By.xpath("//*[@id=\"rso\"]/div[1]/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div/span")).getText());
 
    }
 @AfterAll
