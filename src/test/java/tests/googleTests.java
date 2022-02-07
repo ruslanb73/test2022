@@ -1,25 +1,23 @@
 package tests;
 
 import com.google.common.annotations.VisibleForTesting;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import pages.SearchPage;
 
 import javax.swing.text.html.parser.Element;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class googleTests {
 
    private static WebDriver driver;
+   private static SearchPage searchPage;
 
    @BeforeAll
    public static void init(){
@@ -27,11 +25,15 @@ public class googleTests {
       ChromeOptions options = new ChromeOptions();
       options.addArguments("start-maximized");
       driver = new ChromeDriver(options);
+      searchPage = new SearchPage(driver);
+   }
+   @BeforeEach
+   public void setup(){
+      driver.get("http://google.com");
    }
 @Test
    public void test1() {
-   driver.get("http://google.com");
-   driver.findElement(By.cssSelector("input.gLFyf.gsfi")).sendKeys("Калькулятор", Keys.ENTER);
+   searchPage.search("Калькулятор");
    driver.findElement(By.xpath("//div[.='(']")).click();
    driver.findElement(By.xpath("//div[.='1']")).click();
    driver.findElement(By.xpath("//div[.='+']")).click();
@@ -45,31 +47,34 @@ public class googleTests {
    driver.findElement(By.xpath("//div[.='÷']")).click();
    driver.findElement(By.xpath("//div[.='5']")).click();
    driver.findElement(By.xpath("//div[.='=']")).click();
-   assertEquals("1", driver.findElement(By.cssSelector("#cwos")).getText());
-   assertEquals("(1 + 2) × 3 - 40 ÷ 5 =", driver.findElement(By.xpath("//*[@id=\"rso\"]/div[1]/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div/span")).getText());
-
+   assertAll(
+           () -> assertEquals("1", searchPage.results.getText()),
+           () -> assertEquals("(1 + 2) × 3 - 40 ÷ 5 =", searchPage.searchId.getText())
+);
 
 
 }
 @Test
    public void test2() {
-   driver.get("http://google.com");
-   driver.findElement(By.cssSelector("input.gLFyf.gsfi")).sendKeys("Калькулятор", Keys.ENTER);
+   searchPage.search("Калькулятор");
    driver.findElement(By.xpath("//div[.='6']")).click();
    driver.findElement(By.xpath("//div[.='÷']")).click();
    driver.findElement(By.xpath("//div[.='0']")).click();
    driver.findElement(By.xpath("//div[.='=']")).click();
-   assertEquals("Infinity", driver.findElement(By.cssSelector("#cwos")).getText());
-   assertEquals("6 ÷ 0 =", driver.findElement(By.xpath("//*[@id=\"rso\"]/div[1]/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div/span")).getText());
+   assertAll(
+           () -> assertEquals("Infinity", searchPage.results.getText()),
+           () -> assertEquals("6 ÷ 0 =", searchPage.searchId.getText())
+           );
 }
    @Test
 public void test3() {
-      driver.get("http://google.com");
-      driver.findElement(By.cssSelector("input.gLFyf.gsfi")).sendKeys("Калькулятор", Keys.ENTER);
+      searchPage.search("Калькулятор");
       driver.findElement(By.xpath("//div[.='sin']")).click();
       driver.findElement(By.xpath("//div[.='=']")).click();
-      assertEquals("Error", driver.findElement(By.cssSelector("#cwos")).getText());
-      assertEquals("sin() =", driver.findElement(By.xpath("//*[@id=\"rso\"]/div[1]/div/div/div[1]/div/div/div[1]/div[2]/div[1]/div/span")).getText());
+      assertAll(
+              () -> assertEquals("Error", searchPage.results.getText()),
+              () -> assertEquals("sin() =", searchPage.searchId.getText())
+      );
 
    }
 @AfterAll
