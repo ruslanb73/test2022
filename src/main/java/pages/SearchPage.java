@@ -18,6 +18,8 @@ public class SearchPage {
     @FindBy(css = "#cwos")
     public WebElement results;
 
+
+
     public SearchPage(WebDriver driver) {
         initElements(driver, this);
     }
