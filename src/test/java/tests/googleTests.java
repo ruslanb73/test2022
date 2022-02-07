@@ -32,6 +32,7 @@ public class googleTests {
       driver.get("http://google.com");
    }
 @Test
+@DisplayName("Проверка операций с целыми числами")
    public void test1() {
    searchPage.search("Калькулятор");
    driver.findElement(By.xpath("//div[.='(']")).click();
@@ -55,6 +56,7 @@ public class googleTests {
 
 }
 @Test
+@DisplayName("Проверка деления на ноль")
    public void test2() {
    searchPage.search("Калькулятор");
    driver.findElement(By.xpath("//div[.='6']")).click();
@@ -67,6 +69,7 @@ public class googleTests {
            );
 }
    @Test
+   @DisplayName("Проверка ошибки при отсутствии значения")
 public void test3() {
       searchPage.search("Калькулятор");
       driver.findElement(By.xpath("//div[.='sin']")).click();
